@@ -24,7 +24,7 @@ public class CompyFrame extends JFrame {
 	private JPanel contentPane;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
-		JFrame.setDefaultLookAndFeelDecorated(true);
+		//		JFrame.setDefaultLookAndFeelDecorated(true);
 		CompyFrame frame = new CompyFrame(readFile());
 
 		EventQueue.invokeLater(() -> {
@@ -37,12 +37,13 @@ public class CompyFrame extends JFrame {
 
 	public CompyFrame(List<String> lines) {
 
+		setAlwaysOnTop(true);
 		setUndecorated(true);
 		setBackground(new Color(0, 0, 0, 0));
 		setLocationRelativeTo(null);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(450, 300);
+		setSize(800, 600);
 		contentPane = new Compy386BorderedPanel(new BorderLayout());
 		setContentPane(contentPane);
 
@@ -53,6 +54,7 @@ public class CompyFrame extends JFrame {
 		tf.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		tf.putClientProperty("caretWidth", 3);
 		tf.setCaretColor(Color.white);
+		tf.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(tf);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
@@ -69,6 +71,14 @@ public class CompyFrame extends JFrame {
 						tf.setCaretPosition(tf.getText().length());
 						if (currentLine == lines.size()) {
 							tf.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+							tf.setEditable(true);
+
+							timer.schedule(new TimerTask() {
+								@Override
+								public void run() {
+									CompyFrame.this.setVisible(false);
+								}
+							}, 5000);
 						}
 					});
 				}
